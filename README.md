@@ -11,6 +11,14 @@ localhost no navegador.
 
 Foi usado o 'passo a passo' que foi disponibilizado no ava, segue uma agenda de desenvolvimento, e no final desse documento vai estar descrito as funcionalidades e resultados esperados.
 
+
+Comandos git
+
+git add . (adicionar todas as alterações na fila de envio)
+git commit - m "Texto do commit" (savlar as alterações no commit)
+git push origin main (enviar tudo para o git)
+
+
 Dia 27/06
 - Criado o repositório no git com readme
 - Criado o projeto maven com as dependencias solicitadas
@@ -33,4 +41,14 @@ controladores necessários.
 - Criado Vhs repository e service, adicionado metodos de comunicaço com o banco.
 - Criado filtro para redirecionamento de telas com o login, levando em conta
 o usuario session, para entrar somente se estiver logado.
+
+Dia 01/07
+
+- Foi criado uma classe de configuração de segurança para desabilitar o auto
+mapeamento do spring security, assim os controllers não serão bloqueados.
+- Foi feito o teste de cadastro de usuario.
+- Foi corrigido um erro de relação entre a tabela categoria e vhs.
+- Criado as tela de interação: Cadastro das fitas e gerenciar categorias,
+foi feito os services e repositories da categoria para que se comuniquem com o banco,
+e ajustado o controller para o funcionamento das novas telas.
 

@@ -5,8 +5,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
 import lombok.Data;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import jakarta.persistence.ManyToMany;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 
 @Entity
@@ -20,7 +23,8 @@ public class Category {
     @Column(nullable = false, length = 100)
     private String categoryName;
 
-    @ManyToOne
-    @JoinColumn(name = "vhs_id")
-    private VHS vhs;
+    @ManyToMany(mappedBy = "categories")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<VHS> vhsList;
 }
