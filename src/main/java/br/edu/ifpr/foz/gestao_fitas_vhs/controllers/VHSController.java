@@ -36,11 +36,17 @@ public class VHSController {
     CategoryService categoryService;
 
     @GetMapping
-    public String findAll(Model model) {
-        
-        List<VHS> listaVHS = vhsService.findAll();
+    public String findAll(@RequestParam(required = false) String titulo, Model model) {
+        List<VHS> listaVHS;
+
+        if (titulo != null && !titulo.isBlank()) {
+            listaVHS = vhsService.findByTittle(titulo);
+        } else {
+            listaVHS = vhsService.findAll();
+        }
+
         model.addAttribute("listaVHS", listaVHS);
-        return "vhs-list";         
+        return "vhs-list";
     }
 
      @GetMapping("/login")

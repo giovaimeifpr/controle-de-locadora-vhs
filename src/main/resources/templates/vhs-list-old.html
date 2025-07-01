@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Fitas VHS</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h2>Fitas Cadastradas</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Diretor</th>
+                <th>Data de Registro</th>
+                <th>Status</th>
+                <th>Categorias</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="fita : ${listaVHS}">
+                <td th:text="${fita.id}"></td>
+                <td th:text="${fita.title}"></td>
+                <td th:text="${fita.director}"></td>
+                <td th:text="${#temporals.format(fita.registrationDate, 'dd/MM/yyyy')}"></td>
+                <td th:text="${fita.status}"></td>
+                <td>
+                    <ul>
+                        <li th:each="cat : ${fita.categories}" th:text="${cat.categoryName}"></li>
+                    </ul>
+                </td>
+                <td>
+                    <a th:href="@{'/vhs/editar/' + ${fita.id}}">Editar</a> |
+                    <a th:href="@{'/vhs/deletar/' + ${fita.id}}">Deletar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <p><a th:href="@{/vhs/cadastro_fitas}">Cadastrar Nova Fita VHS</a></p>
+    <p><a th:href="@{/vhs/categorias}">Gerenciar Categorias</a></p>
+    <p><a th:href="@{/logout}">Sair</a></p>
+</body>
+</html>

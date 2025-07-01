@@ -10,7 +10,7 @@ import br.edu.ifpr.foz.gestao_fitas_vhs.entidades.VHS;
 @Repository
 public interface VHSRepository extends JpaRepository<VHS, Long> {
     
-    VHS findByTitle(String title);
+    List<VHS> findByTitleContainingIgnoreCase(String title);
 
     @Query("SELECT DISTINCT v FROM VHS v LEFT JOIN FETCH v.categories")
     List<VHS> buscarTodasComCategorias();

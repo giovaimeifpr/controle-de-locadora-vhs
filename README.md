@@ -44,11 +44,13 @@ o usuario session, para entrar somente se estiver logado.
 
 Dia 01/07
 
-- Foi criado uma classe de configuração de segurança para desabilitar o auto
+- Criado uma classe de configuração de segurança para desabilitar o auto
 mapeamento do spring security, assim os controllers não serão bloqueados.
-- Foi feito o teste de cadastro de usuario.
-- Foi corrigido um erro de relação entre a tabela categoria e vhs.
+- Feito o teste de cadastro de usuario.
+- Corrigido um erro de relação entre a tabela categoria e vhs.
 - Criado as tela de interação: Cadastro das fitas e gerenciar categorias,
 foi feito os services e repositories da categoria para que se comuniquem com o banco,
 e ajustado o controller para o funcionamento das novas telas.
+- Estilização do front nas telas.
+- Inclusão do campo pesquisa na listagem das fitas.
 

@@ -17,8 +17,8 @@ public class VHSService {
         return vhsRepository.buscarTodasComCategorias();
     }
 
-    public VHS findByTittle(String title) {
-        return vhsRepository.findByTitle(title);
+    public List<VHS> findByTittle(String title) {
+        return vhsRepository.findByTitleContainingIgnoreCase(title);
     }
 
     public void salvarFita(VHS vhs) {

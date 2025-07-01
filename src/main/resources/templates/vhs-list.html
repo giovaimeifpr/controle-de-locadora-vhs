@@ -3,45 +3,148 @@
 <head>
     <title>Lista de Fitas VHS</title>
     <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form.search-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button[type="submit"] {
+            padding: 10px 16px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .actions {
+            margin-top: 10px;
+        }
+
+        .actions a {
+            display: inline-block;
+            margin-right: 15px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Fitas Cadastradas</h2>
+    <div class="container">
+        <h2>Fitas Cadastradas</h2>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Título</th>
-                <th>Diretor</th>
-                <th>Data de Registro</th>
-                <th>Status</th>
-                <th>Categorias</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="fita : ${listaVHS}">
-                <td th:text="${fita.id}"></td>
-                <td th:text="${fita.title}"></td>
-                <td th:text="${fita.director}"></td>
-                <td th:text="${#temporals.format(fita.registrationDate, 'dd/MM/yyyy')}"></td>
-                <td th:text="${fita.status}"></td>
-                <td>
-                    <ul>
-                        <li th:each="cat : ${fita.categories}" th:text="${cat.categoryName}"></li>
-                    </ul>
-                </td>
-                <td>
-                    <a th:href="@{'/vhs/editar/' + ${fita.id}}">Editar</a> |
-                    <a th:href="@{'/vhs/deletar/' + ${fita.id}}">Deletar</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <!-- Campo de pesquisa -->
+        <form class="search-form" th:action="@{/vhs}" method="get">
+            <input type="text" name="titulo" placeholder="Pesquisar por título"
+                   th:value="${param.titulo}">
+            <button type="submit">Pesquisar</button>
+        </form>
 
-    <br>
-    <p><a th:href="@{/vhs/cadastro_fitas}">Cadastrar Nova Fita VHS</a></p>
-    <p><a th:href="@{/vhs/categorias}">Gerenciar Categorias</a></p>
-    <p><a th:href="@{/logout}">Sair</a></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Diretor</th>
+                    <th>Data de Registro</th>
+                    <th>Status</th>
+                    <th>Categorias</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="fita : ${listaVHS}">
+                    <td th:text="${fita.id}"></td>
+                    <td th:text="${fita.title}"></td>
+                    <td th:text="${fita.director}"></td>
+                    <td th:text="${#temporals.format(fita.registrationDate, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${fita.status}"></td>
+                    <td>
+                        <ul>
+                            <li th:each="cat : ${fita.categories}" th:text="${cat.categoryName}"></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <a th:href="@{'/vhs/editar/' + ${fita.id}}">Editar</a> |
+                        <a th:href="@{'/vhs/deletar/' + ${fita.id}}">Deletar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="actions">
+            <a th:href="@{/vhs/cadastro_fitas}">Cadastrar Nova Fita VHS</a>
+            <a th:href="@{/vhs/categorias}">Gerenciar Categorias</a>
+            <a th:href="@{/logout}">Sair</a>
+        </div>
+    </div>
 </body>
 </html>
