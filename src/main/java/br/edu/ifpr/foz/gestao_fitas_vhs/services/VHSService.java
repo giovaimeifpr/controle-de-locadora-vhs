@@ -17,12 +17,24 @@ public class VHSService {
         return vhsRepository.buscarTodasComCategorias();
     }
 
-    public List<VHS> findByTittle(String title) {
-        return vhsRepository.findByTitleContainingIgnoreCase(title);
+    public List<VHS> findByTittle(String tittle) {
+        return vhsRepository.findByTittleContainingIgnoreCase(tittle);
+    }
+
+    public VHS findByCodeBar(Integer codebar) {
+        return vhsRepository.findByCodebar(codebar).orElse(null);
     }
 
     public void salvarFita(VHS vhs) {
         vhsRepository.save(vhs);
+    }
+
+    public void deletarFita(Long id) {
+        vhsRepository.deleteById(id);
+    }   
+
+    public VHS findById(Long id) {
+        return vhsRepository.findById(id).orElse(null);
     }
 
 }

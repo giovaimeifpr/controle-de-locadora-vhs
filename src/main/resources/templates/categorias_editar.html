@@ -65,10 +65,6 @@
         button:hover {
             background-color: #45a049;
         }
-        .success {
-            color: green;
-            margin-bottom: 10px;
-        }
 
         .error {
             color: red;
@@ -90,38 +86,17 @@
 </head>
 <body>
     <div class="container">
-        <h2>Gerenciar Categorias</h2>
-
-        <!-- Exibir categorias -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome Categoria</th>
-                    <th>Opções</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="cat : ${categorias}">
-                    <td th:text="${cat.categoryName}"></td>
-                    <td class="action-links">
-                        <a th:href="@{'/categorias_editar/' + ${cat.id}}">Editar</a>
-                        <a th:href="@{'/categorias_deletar/' + ${cat.id}}" 
-                           onclick="return confirm('Tem certeza que deseja excluir esta categoria?');">Excluir</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Formulário de cadastro -->
-        <form th:action="@{/categorias}" method="post">
+        <h2>Editar Categoria</h2>
+        
+        <form th:action="@{/categorias_editar}" method="post">
             <div th:if="${erro}" class="error" th:text="${erro}"></div>
-            <div th:if="${mensagem}" class="success" th:text="${mensagem}"></div>
+            <input type="hidden" name="id" th:value="${categoria.id}" />
 
-            <input type="text" name="name" placeholder="Nova Categoria" required>
-            <button type="submit">Cadastrar Categoria</button>
+            <input type="text" name="name" placeholder="Nova Categoria" th:value="${categoria.categoryName}" required>
+            <button type="submit">Atualizar Categoria</button>
         </form>
 
-        <a class="back-link" th:href="@{/vhs}">← Voltar para lista de fitas</a>
+        <a class="back-link" th:href="@{/categorias}">← Voltar para lista de categorias</a>
     </div>
 </body>
 </html>

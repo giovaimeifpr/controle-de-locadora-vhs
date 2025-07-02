@@ -9,8 +9,29 @@ Para rodar esse projeto é necessário ter o spring boot na extensão do vscode 
 o host da aplicação. Assim que o vscode terminar de iniciar o projeto entrar pelo
 localhost no navegador.
 
-Foi usado o 'passo a passo' que foi disponibilizado no ava, segue uma agenda de desenvolvimento, e no final desse documento vai estar descrito as funcionalidades e resultados esperados.
+Funcionalidades
 
+Ao acessar o site é necessário fazer o login para prosseguir a gestão das fitas.
+- Com usuário logado a primeira tela é a listagem de fitas do banco.
+- Na tela inicial é possivel pesquisar, cadastrar, editar ou excluir nova fita, gerenciar categorias ou sair.
+- Na tela de gerenciar categorias é possível adicionar, editar, excluir (caso não tiver relação
+com nenhum filme) categorias. Necessário começar por aqui pois os filmes tem relações com as categorias.
+- Na tela de cadastro das fitas é possivel preencher os seguintes campos: 
+  Identificador (Número inteiro - Seria o código da fita)
+  Titulo da fita - Texto de 100 letras
+  Imagem (opcional) - url da imagem da fita, um caminho de armazenamento externo ao programa.
+  Diretor - Texto de 100 letras
+  Categoria - Seleção criada pelo próprio usuário na tela de gerenciar categorias
+  Data de cadastro - usuário seleciona a data de hoje.
+  Status da fita - Usuário seleciona entre 3 opções (Disponível, Alugada, ou Indisponível)
+  Botão de cadastrar fita para confirmar. (em seguida a lista de fitas já é exibida)
+
+Resultados Esperados.
+
+Com essa aplicação simples, é possível cadastrar, armazenar e gerir uma seleção de fitas vhs,
+após concluido projeto, as implementações ficam mais fácil, se quiser adicionar um campo
+localização, prateleira, corredor, etc. Estilizar com arquivo css, infinitas possibilidades.
+Através do 'passo a passo' que foi disponibilizado no ava, segue uma agenda de desenvolvimento. 
 
 Comandos git
 
@@ -53,4 +74,18 @@ foi feito os services e repositories da categoria para que se comuniquem com o b
 e ajustado o controller para o funcionamento das novas telas.
 - Estilização do front nas telas.
 - Inclusão do campo pesquisa na listagem das fitas.
+
+Dia 02/07
+
+- Criado o CRUD, para deletar e editar/atualizar as fitas.
+- Feito uma readequação dos controllers, separado em categoria e login.
+- Criado os metodos controladores dessas novas açes.
+- Criado o crud de categorias e as ações dos respecitovos controllers, service, repository.
+- Motificado a lista das fitas para exibir imagens, através do url e ser opcional.
+- Botão de excluir e editar das categorias foram desenvolvidos. Com seus respectivos
+service e repository. Se houver categorias associadas as fitas não ser permitido a exclusão.
+- Implementação do campo código de barras na classe vhs, e todas modificações necessárias.
+- Adicionado imagens de fundo e logo para melhorar o visual.
+- Feito a correção da mensagem de erro do login.
+
 

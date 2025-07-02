@@ -7,6 +7,8 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
+            background: url("/img/fundo.jpg") no-repeat center center fixed;  
+            background-size: cover; 
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -111,7 +113,8 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Código de Barras</th>
+                    <th>Imagem</th>
                     <th>Título</th>
                     <th>Diretor</th>
                     <th>Data de Registro</th>
@@ -122,8 +125,13 @@
             </thead>
             <tbody>
                 <tr th:each="fita : ${listaVHS}">
-                    <td th:text="${fita.id}"></td>
-                    <td th:text="${fita.title}"></td>
+                    <td th:text="${fita.codebar}"></td>
+                    <td>
+                        <img th:src="${fita.imageUrl != null && !fita.imageUrl.isEmpty() ? fita.imageUrl : '/img/default.png'}"
+                            alt="Imagem da fita"
+                            width="80" height="100">
+                    </td>
+                    <td th:text="${fita.tittle}"></td>
                     <td th:text="${fita.director}"></td>
                     <td th:text="${#temporals.format(fita.registrationDate, 'dd/MM/yyyy')}"></td>
                     <td th:text="${fita.status}"></td>
@@ -134,7 +142,11 @@
                     </td>
                     <td>
                         <a th:href="@{'/vhs/editar/' + ${fita.id}}">Editar</a> |
-                        <a th:href="@{'/vhs/deletar/' + ${fita.id}}">Deletar</a>
+                        <a th:href="@{'/vhs/excluir/' + ${fita.id}}"
+                        th:attr="onclick=|return confirm('Tem certeza que deseja excluir a fita: ${fita.tittle}?')|">
+                        Deletar
+                        </a>
+
                     </td>
                 </tr>
             </tbody>
@@ -142,7 +154,7 @@
 
         <div class="actions">
             <a th:href="@{/vhs/cadastro_fitas}">Cadastrar Nova Fita VHS</a>
-            <a th:href="@{/vhs/categorias}">Gerenciar Categorias</a>
+            <a th:href="@{/categorias}">Gerenciar Categorias</a>
             <a th:href="@{/logout}">Sair</a>
         </div>
     </div>

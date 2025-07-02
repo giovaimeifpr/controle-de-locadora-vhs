@@ -25,18 +25,18 @@ public class AutenticationFilter implements Filter {
         String uri = req.getRequestURI();
 
         boolean acessoLiberado = 
-            uri.startsWith("/vhs/login") || 
-            uri.startsWith("/vhs/cadastro") ||
+            uri.startsWith("/login") || 
+            uri.startsWith("/cadastro") ||
             uri.startsWith("/css") ||
             uri.startsWith("/js") ||
-            uri.startsWith("/images");
+            uri.startsWith("/img");
 
         Usuario usuario = (Usuario) req.getSession().getAttribute("usuarioLogado");
 
         if (usuario != null || acessoLiberado) {
             chain.doFilter(request, response);
         } else {
-            resp.sendRedirect(req.getContextPath() + "/vhs/login");
+            resp.sendRedirect(req.getContextPath() + "/login");
         }
     }
 }

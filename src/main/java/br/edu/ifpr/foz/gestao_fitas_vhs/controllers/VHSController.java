@@ -5,15 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 
 import br.edu.ifpr.foz.gestao_fitas_vhs.entidades.TapeStatus;
-import br.edu.ifpr.foz.gestao_fitas_vhs.entidades.Usuario;
 import br.edu.ifpr.foz.gestao_fitas_vhs.entidades.VHS;
 import br.edu.ifpr.foz.gestao_fitas_vhs.services.VHSService;
-import jakarta.servlet.http.HttpSession;
-import br.edu.ifpr.foz.gestao_fitas_vhs.services.UsuarioService;
 import br.edu.ifpr.foz.gestao_fitas_vhs.services.CategoryService;
 
 import java.time.LocalDate;
@@ -30,9 +28,6 @@ public class VHSController {
     VHSService vhsService;
 
     @Autowired
-    UsuarioService usuarioService;
-
-    @Autowired
     CategoryService categoryService;
 
     @GetMapping
@@ -47,64 +42,8 @@ public class VHSController {
 
         model.addAttribute("listaVHS", listaVHS);
         return "vhs-list";
-    }
-
-     @GetMapping("/login")
-    public String telaLogin() {
-        return "login";
-    }
-
-    @PostMapping("/login")
-    public String login(
-            @RequestParam String email,
-            @RequestParam String senha,
-            HttpSession session,
-            Model model) {
-
-        Usuario usuario = usuarioService.autenticar(email, senha);
-
-        if (usuario != null) {
-            session.setAttribute("usuarioLogado", usuario);
-            return "redirect:/vhs";
-        } else {
-            model.addAttribute("erro", "Usuário ou senha inválidos.");
-            return "redirect:/login";
-        }
-
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/login";
-    }
-
-    @GetMapping("/cadastro")
-    public String telaCadastro() {
-        return "cadastro";
-    }
-
-    @PostMapping("/cadastro")
-    public String cadastrar(
-            @RequestParam String nome,
-            @RequestParam String email,
-            @RequestParam String senha,
-            Model model) {
-
-        if (usuarioService.findByEmail(email) != null) {
-            model.addAttribute("erro", "E-mail já cadastrado.");
-            return "cadastro";
-        }
-
-        Usuario usuario = new Usuario();
-        usuario.setNome(nome);
-        usuario.setEmail(email);
-        usuario.setSenha(senha);
-
-        usuarioService.salvarUsuario(usuario);
-
-        return "redirect:/login";
-    }    
+    }   
+        
 
     @GetMapping("/cadastro_fitas")
     public String telaCadastroFitas(Model model) {
@@ -114,7 +53,8 @@ public class VHSController {
 
     @PostMapping("/cadastro_fitas")
     public String cadastrarFitas(
-            @RequestParam String title,
+            @RequestParam Integer codebar,
+            @RequestParam String tittle,
             @RequestParam String director,
             @RequestParam String imageUrl,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate registrationDate,
@@ -122,13 +62,14 @@ public class VHSController {
             @RequestParam List<Long> categories, // IDs das categorias
             Model model) {
 
-        if (vhsService.findByTittle(title) != null) {
-            model.addAttribute("erro", "Fita já cadastrada.");
+        if (vhsService.findByCodeBar(codebar) != null) {
+            model.addAttribute("erro", "Fita já cadastrada com esse código de barras.");
             return "cadastro_fitas";
         }
 
         VHS vhs = new VHS();
-        vhs.setTitle(title);
+        vhs.setCodebar(codebar);
+        vhs.setTittle(tittle);
         vhs.setDirector(director);
         vhs.setImageUrl(imageUrl);
         vhs.setRegistrationDate(registrationDate);
@@ -141,44 +82,52 @@ public class VHSController {
         vhsService.salvarFita(vhs);
 
         return "redirect:/vhs";
-    }
+    }   
+    
 
-    @GetMapping("/categorias")
-    public String CadastrarCategorias(Model model) {
+    @GetMapping("/editar/{id}")
+    public String telaEditar(@PathVariable Long id, Model model) {
+        VHS fita = vhsService.findById(id);
+        model.addAttribute("fita", fita);
         model.addAttribute("categorias", categoryService.findAll());
-        return "categorias";
+        model.addAttribute("statuses", TapeStatus.values());
+        return "editar_fita";
     }
-    
-    @PostMapping("/categorias")
-    public String cadastrarCategoria(
-            @RequestParam String name,
-            Model model) {
 
-        if (categoryService.buscarPorNome(name) != null) {
-            model.addAttribute("erro", "Categoria já cadastrada.");
-            return "categorias";
+    @PostMapping("/editar")
+    public String editarFita(
+        @RequestParam Long id,
+        @RequestParam Integer codebar,
+        @RequestParam String tittle,
+        @RequestParam String director,
+        @RequestParam String imageUrl,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate registrationDate,
+        @RequestParam TapeStatus status,
+        @RequestParam List<Long> categories) {
+
+        VHS fita = vhsService.findById(id);
+        fita.setCodebar(codebar);
+        fita.setTittle(tittle);
+        fita.setDirector(director);
+        fita.setImageUrl(imageUrl);
+        fita.setRegistrationDate(registrationDate);
+        fita.setStatus(status);
+
+        Set<Category> categoriaSet = new HashSet<>(categoryService.buscarPorIds(categories));
+        fita.setCategories(categoriaSet);
+
+        vhsService.salvarFita(fita);
+
+        return "redirect:/vhs";
+    }
+
+    @GetMapping("/excluir/{id}")
+    public String excluirFita(@PathVariable Long id) {
+        VHS fita = vhsService.findById(id);
+        if (fita != null) {
+            vhsService.deletarFita(id);
         }
-
-        Category category = new Category();
-        category.setCategoryName(name);
-
-        categoryService.salvar(category);
-
-        return "redirect:/vhs/categorias";
-    }
-    
-    @GetMapping("/debug")
-    public String debug(Model model) {
-        List<VHS> fitas = vhsService.findAll();
-        for (VHS v : fitas) {
-            System.out.println("Fita: " + v.getTitle());
-            System.out.println("Categorias:");
-            for (Category c : v.getCategories()) {
-                System.out.println(" - " + c.getCategoryName());
-            }
-        }
-        model.addAttribute("listaVHS", fitas);
-        return "vhs-list";
-    }
+        return "redirect:/vhs";
+    }    
 
 }

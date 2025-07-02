@@ -34,8 +34,19 @@ public class CategoryService {
     public Category salvar(Category category) {
         return categoryRepository.save(category);   
     }
-    public void excluir(Long id) {
-        categoryRepository.deleteById(id);
+    public boolean excluir(Long id) {
+        Category categoria = categoryRepository.findById(id).orElse(null);
+        if (categoria == null) {
+            return false;
+        }
+
+        // Verifica se há fitas associadas
+        if (categoria.getVhsList() != null && !categoria.getVhsList().isEmpty()) {
+            return false; // Tem vínculo, não pode deletar
+        }
+
+        categoryRepository.delete(categoria);
+        return true;
     }
    
 

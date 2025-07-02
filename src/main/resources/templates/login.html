@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Login</title>
+    <title>Login - Gerenciador de Fitas VHS</title>
     <meta charset="UTF-8">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            background: url("/img/fundo.jpg") no-repeat center center fixed;  
+            background-size: cover;            
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,6 +21,19 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             width: 320px;
             text-align: center;
+        }
+
+        .login-logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .system-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
         }
 
         h2 {
@@ -69,8 +83,15 @@
 </head>
 <body>
     <div class="login-container">
+        
+        <img class="login-logo" th:src="@{'/img/logo.jpeg'}" alt="Logo Locadora">
+
+        
+        <div class="system-title">Gerenciador de Fitas VHS</div>
+
         <h2>Login</h2>
-        <form th:action="@{/vhs/login}" method="post">
+
+        <form th:action="@{/login}" method="post">
             <input type="text" name="email" placeholder="Email" required>
             <input type="password" name="senha" placeholder="Senha" required>
             <button type="submit">Entrar</button>
@@ -78,7 +99,8 @@
 
         <p class="error-message" th:if="${erro}" th:text="${erro}"></p>
 
-        <a th:href="@{/vhs/cadastro}" class="register-link">Não tem conta? Cadastre-se</a>
+
+        <a th:href="@{/cadastro}" class="register-link">Não tem conta? Cadastre-se</a>
     </div>
 </body>
 </html>
